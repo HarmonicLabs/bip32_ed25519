@@ -131,11 +131,13 @@ export class XPrv
     /**
      * construtcts an `XPrv` given bip39 entropy bytes
      * 
+     * @param password is optional, and in Cardano is more ofthen than not the empty string (`""`)
+     * note that this is a totally different password used in cardano wallets (aka. THIS IS **NOT** THE SPENDING PASSWORD)
      * @returns {XPrv} the extended private key
      */
-    static fromEntropy( entropy: Uint8Array ): XPrv
+    static fromEntropy( entropy: Uint8Array, password: string = "" ): XPrv
     {
-        const bytes = pbkdf2("",entropy,4096,96);
+        const bytes = pbkdf2( password, entropy, 4096, 96 );
         normalizeBytesForce3rd( bytes );
         return new XPrv( bytes );
     }

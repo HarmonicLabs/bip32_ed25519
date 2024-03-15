@@ -1,6 +1,6 @@
 {
   "name": "@harmoniclabs/bip32_ed25519",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "pure ts bip32-ed25519 implementation with minimal dependencies for cardano extended keys",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

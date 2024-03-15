@@ -51,7 +51,11 @@ export function pbkdf2<KeyLen extends number>(
         }
 
         // T.copy(DK, destPos)
-        DK.set(T, destPos);
+        DK.set(
+            // only in the DK bound
+            T.slice(0,DK.length - destPos), 
+            destPos
+        );
         destPos += hLen
     }
 
