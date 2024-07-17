@@ -1,4 +1,4 @@
-import { writeUint32LE } from "@harmoniclabs/uint8array-utils";
+import { fromHex, writeUint32LE } from "@harmoniclabs/uint8array-utils";
 import { pbkdf2 } from "./pbkdf2";
 import { XPub } from "./XPub";
 import { add28mul8 } from "./add28mul8";
@@ -135,8 +135,9 @@ export class XPrv
      * note that this is a totally different password used in cardano wallets (aka. THIS IS **NOT** THE SPENDING PASSWORD)
      * @returns {XPrv} the extended private key
      */
-    static fromEntropy( entropy: Uint8Array, password: string = "" ): XPrv
+    static fromEntropy( entropy: Uint8Array | string, password: string = "" ): XPrv
     {
+        entropy = typeof entropy === "string" && /[0-9a-fA-F]*/.test( entropy ) ? fromHex( entropy ) : entropy; 
         const bytes = pbkdf2( password, entropy, 4096, 96 );
         normalizeBytesForce3rd( bytes );
         return new XPrv( bytes );

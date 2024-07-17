@@ -34,4 +34,21 @@ test("prv", () => {
 
     expect( myPub )
     .toEqual(  pub );
+
+    let myPrv = myAccount.derive(0);
+    let prv = account.derive(0);
+
+    expect( myPrv.bytes )
+    .toEqual( new Uint8Array( prv.to_raw_bytes() ) );
+
+    myPrv = myPrv.derive(0);
+    prv = prv.derive(0);
+
+    expect( myPrv.bytes )
+    .toEqual( new Uint8Array( prv.to_raw_bytes() ) );
+
+    expect( myPrv.toPrivateKeyBytes() )
+    .toEqual( new Uint8Array( prv.to_raw_key().to_raw_bytes() ) );
+
+
 })
