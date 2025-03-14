@@ -2,7 +2,7 @@ import { fromHex, writeUint32LE } from "@harmoniclabs/uint8array-utils";
 import { pbkdf2 } from "./pbkdf2";
 import { XPub } from "./XPub";
 import { add28mul8 } from "./add28mul8";
-import { extendedToPublic, signExtendedEd25519, hmacSHA512, sha2_512, decodeBech32, encodeBech32 } from "@harmoniclabs/crypto";
+import { extendedToPublic, signExtendedEd25519, hmacSHA512, sha2_512, decodeBech32, encodeBech32, sha2_512_sync, signExtendedEd25519_sync } from "@harmoniclabs/crypto";
 
 /// Extended Private key size in bytes
 const XPRV_SIZE = 96 as const;
@@ -77,7 +77,7 @@ export class XPrv
 
     sign( message: Uint8Array ): { pubKey: Uint8Array, signature: Uint8Array }
     {
-        return signExtendedEd25519( message, this.toPrivateKeyBytes() );
+        return signExtendedEd25519_sync( message, this.toPrivateKeyBytes() );
     }
 
     /**
@@ -114,7 +114,7 @@ export class XPrv
     static fromNonExended( bytes: Uint8Array, chainCode: Uint8Array ): XPrv
     {
         const raw = new Uint8Array( XPRV_SIZE ) as XPrvBytes;
-        raw.set( sha2_512( bytes ), 0 );
+        raw.set( sha2_512_sync( bytes ), 0 );
         raw.set( chainCode, 64 );
         normalizeBytesForce3rd( raw );
         return new XPrv( raw );
@@ -157,7 +157,7 @@ export class XPrv
         {
             // fromNonExended
             const tmp = new Uint8Array( 96 ) as XPrvBytes;
-            tmp.set( sha2_512( bytes.slice( 0,32 ) ) );
+            tmp.set( sha2_512_sync( bytes.slice( 0,32 ) ) );
             tmp.set( bytes.slice( 32, 64 ), 64 );
             normalizeBytesForce3rd( tmp );
             bytes = tmp;

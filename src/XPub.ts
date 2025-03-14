@@ -1,6 +1,6 @@
 import { toHex, writeUint32LE } from "@harmoniclabs/uint8array-utils";
 import { add28mul8 } from "./add28mul8";
-import { hmacSHA512, addPointsEdwards, bigpointToUint8Array, ed25519bigint, pointFromBytes, scalarMultBase, verifyEd25519Signature } from "@harmoniclabs/crypto";
+import { hmacSHA512, addPointsEdwards, bigpointToUint8Array, ed25519bigint, pointFromBytes, scalarMultBase, verifyEd25519Signature, verifyEd25519Signature_sync } from "@harmoniclabs/crypto";
 
 export type XPubBytes = Uint8Array & { length: 64 }
 
@@ -37,7 +37,7 @@ export class XPub
 
     verify( message: Uint8Array, signature: Uint8Array ): boolean
     {
-        return verifyEd25519Signature( signature, message, this.toPubKeyBytes() );
+        return verifyEd25519Signature_sync( signature, message, this.toPubKeyBytes() );
     }
 
     derive( index: number ): XPub
